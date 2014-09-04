@@ -6,7 +6,7 @@
 */
 
 module.exports = {
-	connection : 'someMongodbServer',
+	connection : 'someMysqlServer',
 	schema : true,
   attributes: {
   	session_id : {
@@ -16,10 +16,11 @@ module.exports = {
   	},
   	user_id : {
   		type : 'string',
-  		required : true
+  		required : true,
+  		defaultsTo : '1'
   	},
   	client_id : {
-  		type : 'string'
+  		type : 'string',
   		required : true,
   		unique : true
   	},

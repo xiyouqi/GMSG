@@ -6,7 +6,7 @@
 */
 
 module.exports = {
-	connection : 'someMongodbServer',
+	connection : 'someMysqlServer',
 	schema : true,
   attributes: {
   	app_id : {
@@ -41,6 +41,14 @@ module.exports = {
   		defaultsTo : 'M'
   	},
   	url : 'type'
+  },
+  afterCreate: function (message, cb) {
+    Notice.update({user_id:message.user_id},{content:message.content}).exec(function(err, notices){
+      for(var i = 0; i < notices.length; i++){
+        Notice.publishUpdate(notices[i].id,notices[i]);
+      }
+      cb();
+    });
   }
 };
 
