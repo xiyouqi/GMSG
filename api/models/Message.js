@@ -6,49 +6,77 @@
 */
 
 module.exports = {
-	connection : 'someMysqlServer',
-	schema : true,
+	connection:'someMysqlServer',
+	schema:true,
   attributes: {
-  	app_id : {
-  		type : 'alphanumericdashed',
-  		required : true
+  	app_id:{
+  		type:'alphanumericdashed',
+  		required:true
   	},
-  	user_id : {
-  		type : 'string',
-  		required : true
+    type:{
+      type:'string',
+      enum:['notice','message'],
+      defaultsTo:'notice'
+    },
+  	user_id:{
+  		type:'string',
+  		required:true
   	},
-  	title : 'string',
-  	image : 'string',
-  	content : {
-  		type : 'string',
-  		required : true
+  	title:'string',
+  	image:'string',
+    summary:{
+      type:'string'
+    },
+  	content:{
+  		type:'text',
+  		required:true
   	},
-  	content_format : {
-  		type : 'string',
-  		enum : ['text','html'],
-  		defaultsTo : 'text'
+  	content_format:{
+  		type:'string',
+  		enum:['text','html','markdown'],
+  		defaultsTo:'text'
   	},
-  	content_type : {
-  		type : 'string',
-  		enum : ['text','image','video']
+  	content_type:{
+  		type:'string',
+  		enum:['text','image','audio','video','card'],
+      defaultsTo:'text'
   	},
-  	data : 'json',
-  	action : 'jsaon',
-  	expired : 'int',
-  	priority : {
-  		type : 'string',
-  		enum : ['H','M','L'],
-  		defaultsTo : 'M'
+  	data:'json',
+  	action:'json',
+  	expired:'int',
+  	priority:{
+  		type:'string',
+  		enum:['H','M','L']
   	},
-  	url : 'type'
+    status:{
+      type:'string',
+      enum:['draft','sent','served','unread','read','invalid'],
+      defaultsTo:'draft'
+    },
+  	url:'url',
+    object_id:'alphanumericdashed',
+    message_id:{
+      type:'uuid',
+      unique:true
+    }
   },
   afterCreate: function (message, cb) {
-    Notice.update({user_id:message.user_id},{content:message.content}).exec(function(err, notices){
+
+    //更新订阅通知模型
+    Notice.update({user_id:message.user_id},{content:message.content,count:1}).exec(function(err, notices){
       for(var i = 0; i < notices.length; i++){
         Notice.publishUpdate(notices[i].id,notices[i]);
       }
       cb();
     });
+
+    //发送邮件通知
+    EmailService.sendNoticeEmail({
+      to:'fingnet@qq.com',
+      subject:message.content,
+      html:message.content
+    });
+
   }
 };
 

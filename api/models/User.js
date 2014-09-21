@@ -6,9 +6,20 @@
 */
 
 module.exports = {
-
-  attributes: {
-
+  attributes:{
+  	user_id:{
+  		required:true
+  	},
+  	session_id:{
+  		required:true
+  	},
+  	user_account:{
+  		type:'alphanumericdashed'
+  	},
+  	user_name:'string',
+  	email:'email',
+  	mobile:'string',
+  	expired:''
   }
 };
 
