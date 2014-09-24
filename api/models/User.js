@@ -6,19 +6,27 @@
 */
 
 module.exports = {
+  connection:'someMysqlServer',
+  migrate: 'safe',
+  schema:true,
+  autoCreatedAt: false,
+  autoUpdatedAt: false,
   attributes:{
   	user_id:{
-  		required:true
-  	},
-  	session_id:{
-  		required:true
+      type:'string',
+  		required:true,
+      primaryKey: true,
+      columnName:'user_key'
   	},
   	user_account:{
   		type:'alphanumericdashed'
   	},
   	user_name:'string',
   	email:'email',
-  	mobile:'string',
+  	mobile:{
+      type:'string',
+      columnName:'phone'
+    },
   	expired:''
   }
 };

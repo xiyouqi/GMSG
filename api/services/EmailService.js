@@ -3,7 +3,7 @@ var transporter = nodemailer.createTransport({
     host: 'mail.dqyt.petrochina',
     auth: {
         user: 'tqinj',
-        pass: 'qinj123456'
+        pass: ''
     },
     maxConnections: 5,
     maxMessages: 10

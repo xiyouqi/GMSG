@@ -22,7 +22,10 @@ module.exports = {
   		type:'string',
   		required:true
   	},
-  	title:'string',
+  	title:{
+      type:'string',
+      required:true
+    },
   	image:'string',
     summary:{
       type:'string'
@@ -45,15 +48,16 @@ module.exports = {
   	action:'json',
   	expired:'int',
   	priority:{
-  		type:'string',
-  		enum:['H','M','L']
+  		type:'int',
+  		enum:['0','1','2'],
+      defaultsTo:0
   	},
     status:{
       type:'string',
       enum:['draft','sent','served','unread','read','invalid'],
       defaultsTo:'draft'
     },
-  	url:'url',
+  	url:'string',
     object_id:'alphanumericdashed',
     message_id:{
       type:'uuid',
@@ -70,11 +74,16 @@ module.exports = {
       cb();
     });
 
-    //发送邮件通知
-    EmailService.sendNoticeEmail({
-      to:'fingnet@qq.com',
-      subject:message.content,
-      html:message.content
+    message.priority > 0 && User.findOne({user_id:message.user_id}).exec(function(err, user){
+      if(err){
+        return;
+      }
+      //发送邮件通知
+      EmailService.sendNoticeEmail({
+        to:user.email,
+        subject:message.content,
+        html:message.content
+      });
     });
 
   }

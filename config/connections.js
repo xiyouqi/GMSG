@@ -45,7 +45,7 @@ module.exports.connections = {
     host: 'localhost',
     user: 'root',
     password: 'glosea',
-    database: 'test',
+    database: 'gmsg',
     timezone: 'utc'
   },
 
