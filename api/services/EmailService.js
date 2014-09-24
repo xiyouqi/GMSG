@@ -14,9 +14,9 @@ module.exports = {
 		options.from = '消息通知<tqinj@petrochina.com.cn>';
 		transporter.sendMail(options, function(error, info){
 	    if(error){
-	        console.log(error);
+        console.log(error);
 	    }else{
-	        console.log('Message sent: ' + info.response);
+        console.log('Message sent to ' + options.to + ': ' + info.response);
 	    }
 		});
 	}

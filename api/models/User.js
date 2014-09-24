@@ -26,8 +26,7 @@ module.exports = {
   	mobile:{
       type:'string',
       columnName:'phone'
-    },
-  	expired:''
+    }
   }
 };
 

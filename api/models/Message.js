@@ -62,6 +62,10 @@ module.exports = {
     message_id:{
       type:'uuid',
       unique:true
+    },
+    send_time:{
+      type:'string',
+      defaultsTo:function(){ return new Date().getTime();}
     }
   },
   afterCreate: function (message, cb) {
@@ -74,14 +78,15 @@ module.exports = {
       cb();
     });
 
+    //根据消息级别获取用户信息（邮箱或手机号码）
     message.priority > 0 && User.findOne({user_id:message.user_id}).exec(function(err, user){
-      if(err){
+      if(err || !user){
         return;
       }
       //发送邮件通知
-      EmailService.sendNoticeEmail({
+      user.email && EmailService.sendNoticeEmail({
         to:user.email,
-        subject:message.content,
+        subject:message.title,
         html:message.content
       });
     });
