@@ -37,6 +37,7 @@ module.exports.sockets = {
   onDisconnect: function(session, socket) {
 
     // By default: do nothing.
+    console.log(socket.id,"is disconnect");
   },
 
 
@@ -184,5 +185,5 @@ module.exports.sockets = {
   ***************************************************************************/
 
   // origins: '*:*',
-
+  'browser client':false
 };

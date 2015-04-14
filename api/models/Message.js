@@ -50,7 +50,8 @@ module.exports = {
   	priority:{
   		type:'int',
   		enum:['0','1','2'],
-      defaultsTo:0
+      defaultsTo:0,
+      protected:true
   	},
     status:{
       type:'string',
